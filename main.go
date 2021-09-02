@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"pdm.tools/processor"
 )
 
@@ -13,28 +14,16 @@ type testFile struct {
 
 func main() {
 
-	path := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\mapping.xlsx"
-	BOMPath := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\34421100248041.xls"
-	manufactureMapping := processor.ManufactureMappingReader(path)
-	partMPartMapping := processor.HxPartMPartMappingReader(path, manufactureMapping)
+	//path := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\mapping.xlsx"
+	//BOMPath := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\34421100248041.xls"
+	cBOMPath := "E:\\CSOT\\电子料梳理\\34298X00370211_PCBA_BOM_V01_20210111.xlsx"
+	//manufactureMapping := processor.ManufactureMappingReader(path)
+	//partMPartMapping := processor.HxPartMPartMappingReader(path, manufactureMapping)
 
-	//for _, value := range partMPartMapping {
-	//	manufactureMapping := value.(map[string]string)
-	//	fmt.Println(manufactureMapping)
-	//	mParts := ""
-	//	manufactures := ""
-	//	for mPart, manufacture := range manufactureMapping {
-	//		mParts = mParts + mPart + "\n"
-	//		manufactures = manufactures + manufacture + "\n"
-	//	}
-	//	fmt.Println("=========")
-	//	fmt.Print(mParts)
-	//	fmt.Println("---------")
-	//	fmt.Print(manufactures)
-	//	fmt.Println("=========")
-	//	break
-	//}
-	processor.BOMWriter(BOMPath,partMPartMapping)
+	//processor.BOMWriter(BOMPath,partMPartMapping)
+
+	cbomlines := processor.GetCadenceBOMLine(cBOMPath)
+	fmt.Println(cbomlines)
 
 	//mapTest := map[string]interface{}{
 	//	"aa": "aa",
