@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"pdm.tools/processor"
 )
 
@@ -22,9 +21,9 @@ func main() {
 
 	//processor.BOMWriter(BOMPath,partMPartMapping)
 
-	cbomlines := processor.GetCadenceBOMLine(cBOMPath)
-	fmt.Println(cbomlines)
-
+	cBOM := processor.GetCadenceBOM(cBOMPath)
+	plmBOM := processor.CadenceBOM2PLMBOM(cBOM)
+	processor.PLMBOMWriter(plmBOM, "")
 	//mapTest := map[string]interface{}{
 	//	"aa": "aa",
 	//	"bb": "bb",

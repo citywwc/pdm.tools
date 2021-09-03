@@ -1,10 +1,15 @@
 package template
 
+type PLMBOM struct {
+	AssemblyPartNo string
+	PLMBomLines    []PLMBOMLine
+}
+
 type PLMBOMLine struct {
 	Item             int
 	Level            int
 	CsotPartID       string
-	Qty              float32
+	Qty              string
 	Unit             string
 	UsagePercent     float32
 	ProcedureConsume float32
@@ -15,7 +20,7 @@ type PLMBOMLine struct {
 	VendorPartNo     string
 }
 
-func PLMBOMInit(item int, csotPartID string, qty float32, location string, vendor string, vendorPartNo string) *PLMBOMLine {
+func PLMBOMInit(item int, csotPartID string, qty string, location string, vendor string, vendorPartNo string) *PLMBOMLine {
 	return &PLMBOMLine{
 		Item:             item,
 		Level:            1,
