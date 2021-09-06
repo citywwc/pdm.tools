@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"pdm.tools/processor"
 )
 
@@ -11,19 +13,33 @@ type testFile struct {
 	ModelName string
 }
 
+func fileWalker(path string) (files []string, err error) {
+	err = filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			files = append(files, filePath)
+
+		}
+		return nil
+	})
+	return files, err
+}
+
 func main() {
 
 	//path := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\mapping.xlsx"
-	//BOMPath := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\34421100248041.xls"
-	cBOMPath := "E:\\CSOT\\电子料梳理\\34298X00370211_PCBA_BOM_V01_20210111.xlsx"
+	cBOMFolderPath := "D:\\workspace\\go\\src\\pdm.tools\\resource\\BOM\\"
+	//cBOMPath := "E:\\CSOT\\电子料梳理\\34298X00370211_PCBA_BOM_V01_20210111.xlsx"
 	//manufactureMapping := processor.ManufactureMappingReader(path)
 	//partMPartMapping := processor.HxPartMPartMappingReader(path, manufactureMapping)
 
 	//processor.BOMWriter(BOMPath,partMPartMapping)
+	cBOMFiles, _ := fileWalker(cBOMFolderPath)
+	for _, cBOMPath := range cBOMFiles {
+		cBOM := processor.GetCadenceBOM(cBOMPath)
+		plmBOM := processor.CadenceBOM2PLMBOM(cBOM)
+		processor.PLMBOMWriter(plmBOM, "")
+	}
 
-	cBOM := processor.GetCadenceBOM(cBOMPath)
-	plmBOM := processor.CadenceBOM2PLMBOM(cBOM)
-	processor.PLMBOMWriter(plmBOM, "")
 	//mapTest := map[string]interface{}{
 	//	"aa": "aa",
 	//	"bb": "bb",

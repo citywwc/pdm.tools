@@ -21,13 +21,31 @@ const BOM_SHEET = "BOM"
 func PLMBOMWriter(plmbom template.PLMBOM, path string) error {
 	plmbomName := plmbom.AssemblyPartNo + "_" + "PLMBOM.xlsx"
 	//plmBOMPath := path+plmbomName
-	//plmBomLines := plmbom.PLMBomLines
+	plmBomLines := plmbom.PLMBomLines
 	f, err := excelize.OpenFile(PLMTEMPLATE_PATH)
 	if err != nil {
 		fmt.Println(err)
 		return err
 
 	}
+	for rowSize := 0; rowSize < len(plmBomLines); rowSize++ {
+		f.InsertRow(BOM_SHEET, 6)
+		f.SetCellValue(BOM_SHEET, "A"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].Item)
+		err := f.MergeCell(BOM_SHEET, "I"+strconv.Itoa(6), "J"+strconv.Itoa(6))
+		if err != nil {
+			return err
+		}
+		f.SetCellValue(BOM_SHEET, "B"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].Level)
+		f.SetCellValue(BOM_SHEET, "C"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].CsotPartID)
+		f.SetCellValue(BOM_SHEET, "E"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].Qty)
+		f.SetCellValue(BOM_SHEET, "F"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].Unit)
+		f.SetCellValue(BOM_SHEET, "I"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].UsagePercent)
+		f.SetCellValue(BOM_SHEET, "K"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].ProcedureConsume)
+		f.SetCellValue(BOM_SHEET, "L"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].PartConsume)
+		f.SetCellValue(BOM_SHEET, "P"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].Vendor)
+		f.SetCellValue(BOM_SHEET, "Q"+strconv.Itoa(6), plmBomLines[len(plmBomLines)-rowSize-1].VendorPartNo)
+	}
+
 	f.SetCellValue(BOM_SHEET, "E4", plmbom.AssemblyPartNo)
 	f.SaveAs(plmbomName)
 	return nil
